@@ -20,14 +20,11 @@
             calculatedTotal: 0,
             
             init() {
-                console.log('Alpine init', {tripType: this.tripType, adults: this.adults, children: this.children, price: this.price});
-                
                 // Calculate initial total
                 this.recalculateTotal();
                 
                 // Watch for changes and recalculate
-                this.$watch('tripType', (newVal, oldVal) => {
-                    console.log('$watch tripType fired', {oldVal, newVal});
+                this.$watch('tripType', () => {
                     this.recalculateTotal();
                 });
                 this.$watch('adults', () => {
@@ -39,31 +36,25 @@
             },
             
             recalculateTotal() {
-                const beforeTotal = this.calculatedTotal;
-                console.log('recalculateTotal called', {beforeTotal, tripType: this.tripType, adults: this.adults, children: this.children, price: this.price});
-                
                 // Calculate base price for one trip
                 const oneWayPrice = (this.adults * this.price) + (this.children * (this.price * 0.8));
                 
                 // Round trip means two trips (outbound + return), so multiply by 2
                 const finalPrice = this.tripType === 'round_trip' ? oneWayPrice * 2 : oneWayPrice;
                 
-                console.log('Price calculation', {oneWayPrice, finalPrice, isRoundTrip: this.tripType === 'round_trip'});
-                
-                // Update the reactive property
+                // Update the reactive property - assign directly to ensure Alpine detects change
                 this.calculatedTotal = finalPrice;
                 
-                console.log('recalculateTotal completed', {beforeTotal, afterTotal: this.calculatedTotal});
+                // Force Alpine to recognize the change
+                this.$forceUpdate();
             },
             
             updateTripType(newType) {
-                console.log('updateTripType called', {oldType: this.tripType, newType, oldTotal: this.calculatedTotal});
-                
                 this.tripType = newType;
-                console.log('tripType set to:', this.tripType);
-                
-                this.recalculateTotal();
-                console.log('After recalculateTotal:', {tripType: this.tripType, calculatedTotal: this.calculatedTotal, formattedTotal: this.formattedTotal});
+                // Force immediate recalculation
+                this.$nextTick(() => {
+                    this.recalculateTotal();
+                });
             },
             
             toggleSeat(seat) {
@@ -105,10 +96,7 @@
             get totalPassengers() { return this.adults + this.children; },
             
             get formattedTotal() {
-                const total = this.calculatedTotal;
-                const formatted = total.toLocaleString('en-US', {minimumFractionDigits: 2});
-                console.log('formattedTotal accessed', {calculatedTotal: total, formatted, tripType: this.tripType});
-                return formatted;
+                return this.calculatedTotal.toLocaleString('en-US', {minimumFractionDigits: 2});
             }
          }">
 
@@ -212,12 +200,12 @@
                             {{-- TRIP TYPE TOGGLE --}}
                             @if(!request('is_return'))
                                 <div class="bg-gray-100 p-1 rounded-lg flex mb-6">
-                                    <button type="button" @click="console.log('One Way clicked'); updateTripType('one_way')" 
+                                    <button type="button" @click="updateTripType('one_way')" 
                                             class="flex-1 py-1.5 rounded-md text-xs font-bold text-center transition-all" 
                                             :class="tripType === 'one_way' ? 'bg-white text-[#001233] shadow-sm' : 'text-gray-500'">
                                         One Way
                                     </button>
-                                    <button type="button" @click="console.log('Round Trip clicked'); updateTripType('round_trip')" 
+                                    <button type="button" @click="updateTripType('round_trip')" 
                                             class="flex-1 py-1.5 rounded-md text-xs font-bold text-center transition-all" 
                                             :class="tripType === 'round_trip' ? 'bg-white text-[#001233] shadow-sm' : 'text-gray-500'">
                                         Round Trip
@@ -263,7 +251,8 @@
                                 <div class="flex justify-between items-end border-t border-gray-200 pt-4 mt-2">
                                     <span class="text-xs font-bold text-gray-400 uppercase tracking-wide">Total Fare</span>
                                     <span class="font-black text-2xl text-[#001233]" 
-                                          x-text="'PHP ' + formattedTotal"></span>
+                                          x-text="'PHP ' + formattedTotal"
+                                          x-effect="calculatedTotal"></span>
                                 </div>
                             </div>
 

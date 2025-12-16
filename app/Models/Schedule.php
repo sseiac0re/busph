@@ -16,6 +16,7 @@ class Schedule extends Model
         'departure_time',
         'arrival_time',
         'available',
+        'status',
     ];
 
     protected $casts = [

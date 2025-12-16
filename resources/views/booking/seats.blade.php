@@ -51,6 +51,10 @@
                 }
             },
 
+            toggleTripType() {
+                this.tripType = this.tripType === 'one_way' ? 'round_trip' : 'one_way';
+            },
+
             get totalPassengers() { return this.adults + this.children; },
             get totalPrice() { 
                 const oneWayPrice = (this.adults * this.price) + (this.children * (this.price * 0.8));
@@ -159,9 +163,14 @@
                             
                             {{-- TRIP TYPE TOGGLE --}}
                             @if(!request('is_return'))
-                                <div class="bg-gray-100 p-1 rounded-lg flex mb-6">
-                                    <div class="flex-1 py-1.5 rounded-md text-xs font-bold text-center transition-all bg-white text-[#001233] shadow-sm">
-                                        {{ request('trip_type') == 'round_trip' ? 'Round Trip' : 'One Way' }}
+                                <div class="bg-gray-100 p-1 rounded-lg flex mb-6 cursor-pointer" @click="toggleTripType()">
+                                    <div class="flex-1 py-1.5 rounded-md text-xs font-bold text-center transition-all" 
+                                         :class="tripType === 'one_way' ? 'bg-white text-[#001233] shadow-sm' : 'text-gray-500'">
+                                        One Way
+                                    </div>
+                                    <div class="flex-1 py-1.5 rounded-md text-xs font-bold text-center transition-all" 
+                                         :class="tripType === 'round_trip' ? 'bg-white text-[#001233] shadow-sm' : 'text-gray-500'">
+                                        Round Trip
                                     </div>
                                 </div>
                             @endif
@@ -216,7 +225,7 @@
                                 {{-- Dynamic Inputs based on Alpine State --}}
                                 <input type="hidden" name="passengers_adult" :value="adults">
                                 <input type="hidden" name="passengers_child" :value="children">
-                                <input type="hidden" name="trip_type" value="{{ request('trip_type', 'one_way') }}">
+                                <input type="hidden" name="trip_type" :value="tripType">
                                 <input type="hidden" name="return_date" value="{{ request('return_date') }}">
                                 @if(request('is_return'))
                                     <input type="hidden" name="is_return" value="1">

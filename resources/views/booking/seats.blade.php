@@ -42,19 +42,14 @@
                 // Round trip means two trips (outbound + return), so multiply by 2
                 const finalPrice = this.tripType === 'round_trip' ? oneWayPrice * 2 : oneWayPrice;
                 
-                // Update the reactive property - assign directly to ensure Alpine detects change
+                // Update the reactive property - use direct assignment
                 this.calculatedTotal = finalPrice;
-                
-                // Force Alpine to recognize the change
-                this.$forceUpdate();
             },
             
             updateTripType(newType) {
                 this.tripType = newType;
-                // Force immediate recalculation
-                this.$nextTick(() => {
-                    this.recalculateTotal();
-                });
+                // Recalculate immediately
+                this.recalculateTotal();
             },
             
             toggleSeat(seat) {
@@ -252,7 +247,7 @@
                                     <span class="text-xs font-bold text-gray-400 uppercase tracking-wide">Total Fare</span>
                                     <span class="font-black text-2xl text-[#001233]" 
                                           x-text="'PHP ' + formattedTotal"
-                                          x-effect="calculatedTotal"></span>
+                                          x-effect="tripType; calculatedTotal"></span>
                                 </div>
                             </div>
 

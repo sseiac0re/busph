@@ -13,64 +13,18 @@
     <form method="POST" action="{{ route('login') }}" class="space-y-6">
         @csrf
 
-        <div x-data="{ 
-            error: null,
-            serverError: @js($errors->first('email')),
-            validate(value) {
-                if (!value || value.trim().length === 0) {
-                    this.error = 'Email is required.';
-                    this.serverError = null;
-                } else if (value !== 'admin') {
-                    const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail|yahoo|hotmail|outlook|busph|email)\.com$/i;
-                    if (!emailRegex.test(value)) {
-                        this.error = 'Please enter a valid email address or admin.';
-                        this.serverError = null;
-                    } else {
-                        this.error = null;
-                        this.serverError = null;
-                    }
-                } else {
-                    this.error = null;
-                    this.serverError = null;
-                }
-            },
-            get errorMessage() {
-                return this.error || this.serverError || '';
-            }
-        }">
+        <div>
             <label for="email" class="block text-lg text-[#001233] mb-2">Email:</label>
             <input id="email" type="text" name="email" :value="old('email')" required autofocus
-                x-on:input="validate($event.target.value)"
-                x-on:blur="validate($event.target.value)"
-                :class="error ? 'border-red-500' : 'border-transparent'"
-                class="block w-full px-4 py-3.5 rounded-xl bg-[#F0F2F5] border focus:border-[#001233] focus:bg-white focus:ring-0 transition shadow-sm" />
-            <p x-show="errorMessage" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
+                class="block w-full px-4 py-3.5 rounded-xl bg-[#F0F2F5] border-transparent focus:border-[#001233] focus:bg-white focus:ring-0 transition shadow-sm" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <div x-data="{ 
-            show: false,
-            error: null,
-            serverError: @js($errors->first('password')),
-            validate(value) {
-                if (!value || value.length === 0) {
-                    this.error = 'Password is required.';
-                    this.serverError = null;
-                } else {
-                    this.error = null;
-                    this.serverError = null;
-                }
-            },
-            get errorMessage() {
-                return this.error || this.serverError || '';
-            }
-        }">
+        <div x-data="{ show: false }">
             <label for="password" class="block text-lg text-[#001233] mb-2">Password:</label>
             <div class="relative">
                 <input :type="show ? 'text' : 'password'" id="password" name="password" required autocomplete="current-password"
-                    x-on:input="validate($event.target.value)"
-                    x-on:blur="validate($event.target.value)"
-                    :class="error ? 'border-red-500' : 'border-transparent'"
-                    class="block w-full px-4 py-3.5 rounded-xl bg-[#F0F2F5] border focus:border-[#001233] focus:bg-white focus:ring-0 transition shadow-sm pr-12" />
+                    class="block w-full px-4 py-3.5 rounded-xl bg-[#F0F2F5] border-transparent focus:border-[#001233] focus:bg-white focus:ring-0 transition shadow-sm pr-12" />
                 
                 <button
                     type="button"
@@ -116,7 +70,7 @@
                     </svg>
                 </button>
             </div>
-            <p x-show="errorMessage" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
         <div class="flex justify-end">

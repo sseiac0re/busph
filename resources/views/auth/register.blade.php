@@ -11,150 +11,44 @@
     <form method="POST" action="{{ route('register') }}" class="space-y-5" enctype="multipart/form-data">
         @csrf
 
-        <div x-data="{ 
-            error: null,
-            serverError: @js($errors->first('name')),
-            validate(value) {
-                if (!value || value.trim().length === 0) {
-                    this.error = 'Name is required.';
-                    this.serverError = null;
-                } else if (value.length > 255) {
-                    this.error = 'Name must not exceed 255 characters.';
-                    this.serverError = null;
-                } else {
-                    const parts = value.split(',').map(p => p.trim());
-                    if (parts.length < 2) {
-                        this.error = 'Please follow the format: Surname, First Name Middle Name';
-                        this.serverError = null;
-                    } else {
-                        this.error = null;
-                        this.serverError = null;
-                    }
-                }
-            },
-            get errorMessage() {
-                return this.error || this.serverError || '';
-            }
-        }">
+        <div>
             <label for="name" class="block text-lg text-[#001233] mb-1">Full Name:</label>
             <p class="text-xs text-[#001233] italic mb-2">Strictly follow the format Surname, First Name Middle Name</p>
             <input id="name" type="text" name="name" :value="old('name')" required autofocus
-                x-on:input="validate($event.target.value)"
-                x-on:blur="validate($event.target.value)"
-                :class="error ? 'border-red-500' : 'border-transparent'"
-                class="block w-full px-4 py-3 rounded-lg bg-[#F3F4F6] border focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" />
-            <p x-show="errorMessage" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
+                class="block w-full px-4 py-3 rounded-lg bg-[#F3F4F6] border border-transparent focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" />
+            <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
-        <div x-data="{ 
-            error: null,
-            serverError: @js($errors->first('valid_id')),
-            validate(file) {
-                if (!file) {
-                    this.error = 'Please upload a valid ID.';
-                    this.serverError = null;
-                } else {
-                    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
-                    if (!allowedTypes.includes(file.type)) {
-                        this.error = 'File must be JPG, PNG, or PDF format.';
-                        this.serverError = null;
-                    } else if (file.size > 2048 * 1024) {
-                        this.error = 'File size must not exceed 2MB.';
-                        this.serverError = null;
-                    } else {
-                        this.error = null;
-                        this.serverError = null;
-                    }
-                }
-            },
-            get errorMessage() {
-                return this.error || this.serverError || '';
-            }
-        }">
+        <div>
             <label class="block text-lg text-[#001233] mb-1">Upload Valid ID:</label>
             <p class="text-xs text-[#001233] mb-2 leading-tight">
                 Please upload one valid government-issued ID (e.g., Passport, UMID, Driver's License) in JPG, PNG, or PDF format.
             </p>
             
             <div class="relative">
-                <input type="file" name="valid_id" id="valid_id" class="hidden" 
-                    x-on:change="
-                        const file = $event.target.files[0];
-                        if (file) {
-                            document.getElementById('file-label').innerText = file.name;
-                            validate(file);
-                        }
-                    " />
-                <label for="valid_id" 
-                    :class="error ? 'border-red-500' : 'border-transparent'"
-                    class="flex items-center justify-between w-full px-4 py-3 rounded-lg bg-[#F3F4F6] border cursor-pointer hover:bg-gray-200 transition focus-within:bg-white focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500">
+                <input type="file" name="valid_id" id="valid_id" class="hidden" onchange="document.getElementById('file-label').innerText = this.files[0].name" />
+                <label for="valid_id" class="flex items-center justify-between w-full px-4 py-3 rounded-lg bg-[#F3F4F6] border border-transparent cursor-pointer hover:bg-gray-200 transition focus-within:bg-white focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500">
                     <span id="file-label" class="text-gray-500">Select file...</span>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#001233]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
                     </svg>
                 </label>
             </div>
-            <p x-show="errorMessage" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
+            <x-input-error :messages="$errors->get('valid_id')" class="mt-2" />
         </div>
 
-        <div x-data="{ 
-            error: null,
-            serverError: @js($errors->first('email')),
-            validate(value) {
-                if (!value || value.trim().length === 0) {
-                    this.error = 'Email is required.';
-                    this.serverError = null;
-                } else {
-                    const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail|yahoo|hotmail|outlook|busph|email)\.com$/i;
-                    if (!emailRegex.test(value)) {
-                        this.error = 'Please enter a valid email address (gmail.com, yahoo.com, hotmail.com, outlook.com, busph.com, or email.com).';
-                        this.serverError = null;
-                    } else {
-                        this.error = null;
-                        this.serverError = null;
-                    }
-                }
-            },
-            get errorMessage() {
-                return this.error || this.serverError || '';
-            }
-        }">
+        <div>
             <label for="email" class="block text-lg text-[#001233] mb-2">Email:</label>
-            <input id="email" type="text" name="email" :value="old('email')" required
-                x-on:input="validate($event.target.value)"
-                x-on:blur="validate($event.target.value)"
-                :class="error ? 'border-red-500' : 'border-transparent'"
-                class="block w-full px-4 py-3 rounded-lg bg-[#F3F4F6] border focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" />
-            <p x-show="errorMessage" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
+            <input id="email" pattern="^[a-zA-Z0-9._%+-]+@(gmail|yahoo|hotmail|outlook|busph|email)\.com$" type="email" name="email" :value="old('email')" required
+                class="block w-full px-4 py-3 rounded-lg bg-[#F3F4F6] border border-transparent focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <div x-data="{ 
-            show: false,
-            error: null,
-            serverError: @js($errors->first('password')),
-            validate(value) {
-                if (!value || value.length === 0) {
-                    this.error = 'Password is required.';
-                    this.serverError = null;
-                } else if (value.length < 8) {
-                    this.error = 'Password must be at least 8 characters.';
-                    this.serverError = null;
-                } else {
-                    this.error = null;
-                    this.serverError = null;
-                }
-            },
-            get errorMessage() {
-                return this.error || this.serverError || '';
-            }
-        }">
+        <div x-data="{ show: false }">
             <label for="password" class="block text-lg text-[#001233] mb-2">Password:</label>
             <div class="relative">
                 <input :type="show ? 'text' : 'password'" id="password" name="password" required autocomplete="new-password"
-                    x-on:input="validate($event.target.value)"
-                    x-on:blur="validate($event.target.value)"
-                    :class="error ? 'border-red-500' : 'border-transparent'"
-                    class="block w-full px-4 py-3 rounded-lg bg-[#F3F4F6] border focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition pr-12" />
+                    class="block w-full px-4 py-3 rounded-lg bg-[#F3F4F6] border border-transparent focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition pr-12" />
                 
                 <button
                     type="button"
@@ -200,38 +94,14 @@
                     </svg>
                 </button>
             </div>
-            <p x-show="errorMessage" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-        <div x-data="{ 
-            show: false,
-            error: null,
-            serverError: @js($errors->first('password_confirmation')),
-            validate(value) {
-                const passwordInput = document.querySelector('[name=password]');
-                const passwordValue = passwordInput?.value || '';
-                if (!value || value.length === 0) {
-                    this.error = 'Please confirm your password.';
-                    this.serverError = null;
-                } else if (passwordValue && value !== passwordValue) {
-                    this.error = 'Passwords do not match.';
-                    this.serverError = null;
-                } else {
-                    this.error = null;
-                    this.serverError = null;
-                }
-            },
-            get errorMessage() {
-                return this.error || this.serverError || '';
-            }
-        }">
+        <div x-data="{ show: false }">
             <label for="password_confirmation" class="block text-lg text-[#001233] mb-2">Confirm Password:</label>
             <div class="relative">
                 <input :type="show ? 'text' : 'password'" id="password_confirmation" name="password_confirmation" required
-                    x-on:input="validate($event.target.value)"
-                    x-on:blur="validate($event.target.value)"
-                    :class="error ? 'border-red-500' : 'border-transparent'"
-                    class="block w-full px-4 py-3 rounded-lg bg-[#F3F4F6] border focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition pr-12" />
+                    class="block w-full px-4 py-3 rounded-lg bg-[#F3F4F6] border border-transparent focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition pr-12" />
                 
                 <button
                     type="button"
@@ -277,7 +147,6 @@
                     </svg>
                 </button>
             </div>
-            <p x-show="errorMessage" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
         </div>
 
         <div class="flex items-start pt-2">

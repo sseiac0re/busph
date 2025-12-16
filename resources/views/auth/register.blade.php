@@ -44,17 +44,109 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <div>
+        <div x-data="{ show: false }">
             <label for="password" class="block text-lg text-[#001233] mb-2">Password:</label>
-            <input id="password" type="password" name="password" required autocomplete="new-password"
-                class="block w-full px-4 py-3 rounded-lg bg-[#F3F4F6] border border-transparent focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" />
+            <div class="relative">
+                <input :type="show ? 'text' : 'password'" id="password" name="password" required autocomplete="new-password"
+                    class="block w-full px-4 py-3 rounded-lg bg-[#F3F4F6] border border-transparent focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition pr-12" />
+                
+                <button
+                    type="button"
+                    @click="show = !show"
+                    class="absolute inset-y-0 right-0 pr-4 flex items-center text-[#001233] hover:text-blue-700 cursor-pointer"
+                >
+                    <!-- Show password icon -->
+                    <svg
+                        x-show="!show"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-6 w-6 stroke-current"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                    >
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7
+                            -1.274 4.057-5.064 7-9.542 7
+                            -4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+
+                    <!-- Hide password icon -->
+                    <svg
+                        x-show="show"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-6 w-6 stroke-current"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                    >
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M13.875 18.825A10.05 10.05 0 0112 19
+                            c-4.478 0-8.268-2.943-9.542-7
+                            a10.05 10.05 0 011.557-3.269" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M6.702 6.702A9.956 9.956 0 0112 5
+                            c4.478 0 8.268 2.943 9.542 7
+                            a9.956 9.956 0 01-4.043 5.14" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3 3l18 18" />
+                    </svg>
+                </button>
+            </div>
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-        <div>
+        <div x-data="{ show: false }">
             <label for="password_confirmation" class="block text-lg text-[#001233] mb-2">Confirm Password:</label>
-            <input id="password_confirmation" type="password" name="password_confirmation" required
-                class="block w-full px-4 py-3 rounded-lg bg-[#F3F4F6] border border-transparent focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" />
+            <div class="relative">
+                <input :type="show ? 'text' : 'password'" id="password_confirmation" name="password_confirmation" required
+                    class="block w-full px-4 py-3 rounded-lg bg-[#F3F4F6] border border-transparent focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition pr-12" />
+                
+                <button
+                    type="button"
+                    @click="show = !show"
+                    class="absolute inset-y-0 right-0 pr-4 flex items-center text-[#001233] hover:text-blue-700 cursor-pointer"
+                >
+                    <!-- Show password icon -->
+                    <svg
+                        x-show="!show"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-6 w-6 stroke-current"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                    >
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7
+                            -1.274 4.057-5.064 7-9.542 7
+                            -4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+
+                    <!-- Hide password icon -->
+                    <svg
+                        x-show="show"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-6 w-6 stroke-current"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                    >
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M13.875 18.825A10.05 10.05 0 0112 19
+                            c-4.478 0-8.268-2.943-9.542-7
+                            a10.05 10.05 0 011.557-3.269" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M6.702 6.702A9.956 9.956 0 0112 5
+                            c4.478 0 8.268 2.943 9.542 7
+                            a9.956 9.956 0 01-4.043 5.14" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3 3l18 18" />
+                    </svg>
+                </button>
+            </div>
         </div>
 
         <div class="flex items-start pt-2">

@@ -18,6 +18,13 @@
             price: {{ $schedule->route->price }},
             tripType: '{{ request('trip_type', 'one_way') }}',
             
+            init() {
+                // Ensure reactivity
+                this.$watch('tripType', () => {
+                    // Force recalculation when tripType changes
+                });
+            },
+            
             toggleSeat(seat) {
                 if (this.selected.includes(seat)) {
                     this.selected = this.selected.filter(s => s !== seat);
@@ -167,12 +174,12 @@
                             {{-- TRIP TYPE TOGGLE --}}
                             @if(!request('is_return'))
                                 <div class="bg-gray-100 p-1 rounded-lg flex mb-6">
-                                    <button type="button" @click="tripType = 'one_way'" 
+                                    <button type="button" @click="$data.tripType = 'one_way'; $forceUpdate()" 
                                             class="flex-1 py-1.5 rounded-md text-xs font-bold text-center transition-all" 
                                             :class="tripType === 'one_way' ? 'bg-white text-[#001233] shadow-sm' : 'text-gray-500'">
                                         One Way
                                     </button>
-                                    <button type="button" @click="tripType = 'round_trip'" 
+                                    <button type="button" @click="$data.tripType = 'round_trip'; $forceUpdate()" 
                                             class="flex-1 py-1.5 rounded-md text-xs font-bold text-center transition-all" 
                                             :class="tripType === 'round_trip' ? 'bg-white text-[#001233] shadow-sm' : 'text-gray-500'">
                                         Round Trip

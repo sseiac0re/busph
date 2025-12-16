@@ -16,6 +16,7 @@
             adults: 1, 
             children: 0, 
             price: {{ $schedule->route->price }},
+            tripType: '{{ request('trip_type', 'one_way') }}',
             
             toggleSeat(seat) {
                 if (this.selected.includes(seat)) {
@@ -52,7 +53,10 @@
 
             get totalPassengers() { return this.adults + this.children; },
             get totalPrice() { 
-                return ((this.adults * this.price) + (this.children * (this.price * 0.8))).toLocaleString('en-US', {minimumFractionDigits: 2});
+                const oneWayPrice = (this.adults * this.price) + (this.children * (this.price * 0.8));
+                // Round trip means two trips (outbound + return), so multiply by 2
+                const finalPrice = this.tripType === 'round_trip' ? oneWayPrice * 2 : oneWayPrice;
+                return finalPrice.toLocaleString('en-US', {minimumFractionDigits: 2});
             }
          }">
 

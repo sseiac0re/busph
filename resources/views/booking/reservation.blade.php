@@ -97,8 +97,10 @@
                                             pattern="\d{4}-\d{4}"
                                             title="Format: 1234-5678"
                                             placeholder="1234-5678"
-                                            class="w-full rounded-lg border-gray-300 text-sm focus:border-[#001233] focus:ring-[#001233]"
-                                            oninput="formatDiscountId(this)"
+                                            class="w-full rounded-lg border-gray-300 text-sm focus:border-[#001233] focus:ring-[#001233] discount-id-input"
+                                            data-passenger-index="{{ $i }}"
+                                            data-passenger-type="adult"
+                                            oninput="formatDiscountId(this); updateTotalPrice();"
                                         >
                                     </div>
                                 </div>
@@ -199,7 +201,7 @@
                             <div class="border-t pt-4 mt-4">
                                 <div class="flex justify-between items-center mb-2">
                                     <span class="text-gray-600 font-bold">Grand Total</span>
-                                    <span class="text-2xl font-black text-[#001233]">₱ {{ number_format($totalPrice, 2) }}</span>
+                                    <span id="grandTotal" class="text-2xl font-black text-[#001233]">₱ {{ number_format($totalPrice, 2) }}</span>
                                 </div>
                                 <p class="text-xs text-right text-gray-400 italic mb-4">Includes all passengers and trips</p>
 
@@ -257,7 +259,7 @@
                         .toUpperCase()
                         .replace(/[^A-Z\s]/g, ''); // Remove anything that is NOT A-Z or space
                 }
-                function formatDiscountId(input) {
+        function formatDiscountId(input) {
             // Remove everything except numbers
             let value = input.value.replace(/\D/g, '');
 
@@ -271,5 +273,63 @@
 
             input.value = value;
         }
+
+        // Price calculation variables
+        const basePrice = {{ $schedule->route->price }};
+        const outboundBasePrice = {{ isset($outboundSchedule) ? $outboundSchedule->route->price : 0 }};
+        const passengersAdult = {{ $request->passengers_adult }};
+        const passengersChild = {{ $request->passengers_child }};
+        const hasOutboundTrip = {{ isset($outboundSchedule) && $outboundSchedule ? 'true' : 'false' }};
+
+        // Function to check if discount ID is valid (format: 1234-5678)
+        function isValidDiscountId(discountId) {
+            return discountId && /^\d{4}-\d{4}$/.test(discountId);
+        }
+
+        // Function to calculate and update total price
+        function updateTotalPrice() {
+            let total = 0;
+
+            // Calculate current trip price
+            for (let i = 0; i < passengersAdult; i++) {
+                const discountInput = document.querySelector(`input[name="passengers[${i}][discount_id]"]`);
+                const discountId = discountInput ? discountInput.value.trim() : '';
+                const hasDiscount = isValidDiscountId(discountId);
+                const price = hasDiscount ? basePrice * 0.80 : basePrice; // 20% off for valid discount ID
+                total += price;
+            }
+
+            // Children always get 20% off
+            for (let j = 0; j < passengersChild; j++) {
+                total += basePrice * 0.80;
+            }
+
+            // Calculate outbound trip price (if round trip)
+            if (hasOutboundTrip) {
+                for (let i = 0; i < passengersAdult; i++) {
+                    const discountInput = document.querySelector(`input[name="passengers[${i}][discount_id]"]`);
+                    const discountId = discountInput ? discountInput.value.trim() : '';
+                    const hasDiscount = isValidDiscountId(discountId);
+                    const price = hasDiscount ? outboundBasePrice * 0.80 : outboundBasePrice;
+                    total += price;
+                }
+
+                // Children always get 20% off for outbound too
+                for (let j = 0; j < passengersChild; j++) {
+                    total += outboundBasePrice * 0.80;
+                }
+            }
+
+            // Update the display
+            const grandTotalElement = document.getElementById('grandTotal');
+            if (grandTotalElement) {
+                grandTotalElement.textContent = '₱ ' + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            }
+        }
+
+        // Initialize price calculation on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTotalPrice();
+        });
     </script>
 </x-app-layout>

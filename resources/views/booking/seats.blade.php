@@ -72,12 +72,17 @@
             get totalPassengers() { return this.adults + this.children; },
             
             get totalPrice() {
+                // Explicitly read all dependencies to ensure reactivity tracking
+                const tripTypeValue = this.tripType;
+                const adultsCount = this.adults;
+                const childrenCount = this.children;
+                const basePrice = this.price;
+                
                 // Calculate base price for one trip
-                const oneWayPrice = (this.adults * this.price) + (this.children * (this.price * 0.8));
+                const oneWayPrice = (adultsCount * basePrice) + (childrenCount * (basePrice * 0.8));
                 
                 // Round trip means two trips (outbound + return), so multiply by 2
-                const isRoundTrip = this.tripType === 'round_trip';
-                const finalPrice = isRoundTrip ? oneWayPrice * 2 : oneWayPrice;
+                const finalPrice = tripTypeValue === 'round_trip' ? oneWayPrice * 2 : oneWayPrice;
                 
                 // Return formatted price
                 return finalPrice.toLocaleString('en-US', {minimumFractionDigits: 2});
@@ -234,7 +239,9 @@
                                 </div>
                                 <div class="flex justify-between items-end border-t border-gray-200 pt-4 mt-2">
                                     <span class="text-xs font-bold text-gray-400 uppercase tracking-wide">Total Fare</span>
-                                    <span class="font-black text-2xl text-[#001233]">PHP <span x-text="totalPrice"></span></span>
+                                    <span class="font-black text-2xl text-[#001233]" 
+                                          x-effect="tripType; adults; children"
+                                          x-text="'PHP ' + totalPrice"></span>
                                 </div>
                             </div>
 

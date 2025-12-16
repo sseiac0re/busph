@@ -50,38 +50,95 @@
                         @csrf
                         
                         {{-- Name --}}
-                        <div class="mb-6">
+                        <div class="mb-6" x-data="{ 
+                            error: null,
+                            validate(value) {
+                                if (!value || value.trim().length === 0) {
+                                    this.error = 'Name is required.';
+                                } else {
+                                    this.error = null;
+                                }
+                            }
+                        }">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Name</label>
                             <input type="text" name="name" value="{{ old('name') }}" required
-                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#001233] focus:ring-[#001233] transition"
+                                   x-on:input="validate($event.target.value)"
+                                   x-on:blur="validate($event.target.value)"
+                                   :class="error ? 'border-red-500' : 'border-gray-300'"
+                                   class="w-full px-4 py-3 rounded-lg border focus:border-[#001233] focus:ring-[#001233] transition"
                                    placeholder="Your Name">
+                            <p x-show="error" x-text="error" class="text-red-500 text-xs mt-1"></p>
                             @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
 
                         {{-- Email --}}
-                        <div class="mb-6">
+                        <div class="mb-6" x-data="{ 
+                            error: null,
+                            validate(value) {
+                                if (!value || value.trim().length === 0) {
+                                    this.error = 'Email is required.';
+                                } else {
+                                    const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail|yahoo|hotmail|outlook|busph|email)\.com$/i;
+                                    if (!emailRegex.test(value)) {
+                                        this.error = 'Please enter a valid email address (gmail.com, yahoo.com, hotmail.com, outlook.com, busph.com, or email.com).';
+                                    } else {
+                                        this.error = null;
+                                    }
+                                }
+                            }
+                        }">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Email</label>
-                            <input type="email" pattern="^[a-zA-Z0-9._%+-]+@(gmail|yahoo|hotmail|outlook|busph|email)\.com$" name="email" value="{{ old('email') }}" required
-                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#001233] focus:ring-[#001233] transition"
+                            <input type="text" name="email" value="{{ old('email') }}" required
+                                   x-on:input="validate($event.target.value)"
+                                   x-on:blur="validate($event.target.value)"
+                                   :class="error ? 'border-red-500' : 'border-gray-300'"
+                                   class="w-full px-4 py-3 rounded-lg border focus:border-[#001233] focus:ring-[#001233] transition"
                                    placeholder="email@example.com">
+                            <p x-show="error" x-text="error" class="text-red-500 text-xs mt-1"></p>
                             @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
 
                         {{-- ✅ ADDED: Subject Field --}}
-                        <div class="mb-6">
+                        <div class="mb-6" x-data="{ 
+                            error: null,
+                            validate(value) {
+                                if (!value || value.trim().length === 0) {
+                                    this.error = 'Subject is required.';
+                                } else {
+                                    this.error = null;
+                                }
+                            }
+                        }">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Subject</label>
                             <input type="text" name="subject" value="{{ old('subject') }}" required
-                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#001233] focus:ring-[#001233] transition"
+                                   x-on:input="validate($event.target.value)"
+                                   x-on:blur="validate($event.target.value)"
+                                   :class="error ? 'border-red-500' : 'border-gray-300'"
+                                   class="w-full px-4 py-3 rounded-lg border focus:border-[#001233] focus:ring-[#001233] transition"
                                    placeholder="e.g. Lost Item, Refund, General Inquiry">
+                            <p x-show="error" x-text="error" class="text-red-500 text-xs mt-1"></p>
                             @error('subject') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
 
                         {{-- Message --}}
-                        <div class="mb-6">
+                        <div class="mb-6" x-data="{ 
+                            error: null,
+                            validate(value) {
+                                if (!value || value.trim().length === 0) {
+                                    this.error = 'Message is required.';
+                                } else {
+                                    this.error = null;
+                                }
+                            }
+                        }">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Message</label>
                             <textarea name="message" rows="5" required
-                                      class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#001233] focus:ring-[#001233] transition"
+                                      x-on:input="validate($event.target.value)"
+                                      x-on:blur="validate($event.target.value)"
+                                      :class="error ? 'border-red-500' : 'border-gray-300'"
+                                      class="w-full px-4 py-3 rounded-lg border focus:border-[#001233] focus:ring-[#001233] transition"
                                       placeholder="How can we help?">{{ old('message') }}</textarea>
+                            <p x-show="error" x-text="error" class="text-red-500 text-xs mt-1"></p>
                             @error('message') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
 

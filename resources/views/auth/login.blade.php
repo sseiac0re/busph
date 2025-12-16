@@ -13,18 +13,51 @@
     <form method="POST" action="{{ route('login') }}" class="space-y-6">
         @csrf
 
-        <div>
+        <div x-data="{ 
+            error: null,
+            validate(value) {
+                if (!value || value.trim().length === 0) {
+                    this.error = 'Email is required.';
+                } else if (value !== 'admin') {
+                    const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail|yahoo|hotmail|outlook|busph|email)\.com$/i;
+                    if (!emailRegex.test(value)) {
+                        this.error = 'Please enter a valid email address or admin.';
+                    } else {
+                        this.error = null;
+                    }
+                } else {
+                    this.error = null;
+                }
+            }
+        }">
             <label for="email" class="block text-lg text-[#001233] mb-2">Email:</label>
             <input id="email" type="text" name="email" :value="old('email')" required autofocus
-                class="block w-full px-4 py-3.5 rounded-xl bg-[#F0F2F5] border-transparent focus:border-[#001233] focus:bg-white focus:ring-0 transition shadow-sm" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                x-on:input="validate($event.target.value)"
+                x-on:blur="validate($event.target.value)"
+                :class="error ? 'border-red-500' : 'border-transparent'"
+                class="block w-full px-4 py-3.5 rounded-xl bg-[#F0F2F5] border focus:border-[#001233] focus:bg-white focus:ring-0 transition shadow-sm" />
+            <x-input-error :messages="$errors->get('email')" :field="'email'" class="mt-2" />
+            <p x-show="error" x-text="error" class="text-sm text-red-600 mt-2"></p>
         </div>
 
-        <div x-data="{ show: false }">
+        <div x-data="{ 
+            show: false,
+            error: null,
+            validate(value) {
+                if (!value || value.length === 0) {
+                    this.error = 'Password is required.';
+                } else {
+                    this.error = null;
+                }
+            }
+        }">
             <label for="password" class="block text-lg text-[#001233] mb-2">Password:</label>
             <div class="relative">
                 <input :type="show ? 'text' : 'password'" id="password" name="password" required autocomplete="current-password"
-                    class="block w-full px-4 py-3.5 rounded-xl bg-[#F0F2F5] border-transparent focus:border-[#001233] focus:bg-white focus:ring-0 transition shadow-sm pr-12" />
+                    x-on:input="validate($event.target.value)"
+                    x-on:blur="validate($event.target.value)"
+                    :class="error ? 'border-red-500' : 'border-transparent'"
+                    class="block w-full px-4 py-3.5 rounded-xl bg-[#F0F2F5] border focus:border-[#001233] focus:bg-white focus:ring-0 transition shadow-sm pr-12" />
                 
                 <button
                     type="button"
@@ -70,7 +103,8 @@
                     </svg>
                 </button>
             </div>
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            <x-input-error :messages="$errors->get('password')" :field="'password'" class="mt-2" />
+            <p x-show="error" x-text="error" class="text-sm text-red-600 mt-2"></p>
         </div>
 
         <div class="flex justify-end">

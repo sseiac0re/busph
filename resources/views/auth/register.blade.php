@@ -30,6 +30,9 @@
             },
             get displayError() {
                 return this.error || this.serverError;
+            },
+            get errorMessage() {
+                return this.error || this.serverError || '';
             }
         }">
             <label for="name" class="block text-lg text-[#001233] mb-1">Full Name:</label>
@@ -39,7 +42,7 @@
                 x-on:blur="validate($event.target.value)"
                 :class="error ? 'border-red-500' : 'border-transparent'"
                 class="block w-full px-4 py-3 rounded-lg bg-[#F3F4F6] border focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" />
-            <p x-show="displayError" x-text="error || serverError" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
+            <p x-show="displayError" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
         </div>
 
         <div x-data="{ 
@@ -61,6 +64,9 @@
             },
             get displayError() {
                 return this.error || this.serverError;
+            },
+            get errorMessage() {
+                return this.error || this.serverError || '';
             }
         }">
             <label class="block text-lg text-[#001233] mb-1">Upload Valid ID:</label>
@@ -86,7 +92,7 @@
                     </svg>
                 </label>
             </div>
-            <p x-show="displayError" x-text="error || serverError" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
+            <p x-show="displayError" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
         </div>
 
         <div x-data="{ 
@@ -106,6 +112,9 @@
             },
             get displayError() {
                 return this.error || this.serverError;
+            },
+            get errorMessage() {
+                return this.error || this.serverError || '';
             }
         }">
             <label for="email" class="block text-lg text-[#001233] mb-2">Email:</label>
@@ -114,7 +123,7 @@
                 x-on:blur="validate($event.target.value)"
                 :class="error ? 'border-red-500' : 'border-transparent'"
                 class="block w-full px-4 py-3 rounded-lg bg-[#F3F4F6] border focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" />
-            <p x-show="displayError" x-text="error || serverError" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
+            <p x-show="displayError" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
         </div>
 
         <div x-data="{ 
@@ -132,6 +141,9 @@
             },
             get displayError() {
                 return this.error || this.serverError;
+            },
+            get errorMessage() {
+                return this.error || this.serverError || '';
             }
         }">
             <label for="password" class="block text-lg text-[#001233] mb-2">Password:</label>
@@ -186,7 +198,7 @@
                     </svg>
                 </button>
             </div>
-            <p x-show="displayError" x-text="error || serverError" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
+            <p x-show="displayError" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
         </div>
 
         <div x-data="{ 
@@ -206,6 +218,9 @@
             },
             get displayError() {
                 return this.error || this.serverError;
+            },
+            get errorMessage() {
+                return this.error || this.serverError || '';
             }
         }">
             <label for="password_confirmation" class="block text-lg text-[#001233] mb-2">Confirm Password:</label>
@@ -260,7 +275,7 @@
                     </svg>
                 </button>
             </div>
-            <p x-show="displayError" x-text="error || serverError" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
+            <p x-show="displayError" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
         </div>
 
         <div class="flex items-start pt-2">

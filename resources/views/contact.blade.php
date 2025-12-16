@@ -62,6 +62,9 @@
                             },
                             get displayError() {
                                 return this.error || this.serverError;
+                            },
+                            get errorMessage() {
+                                return this.error || this.serverError || '';
                             }
                         }">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Name</label>
@@ -71,7 +74,7 @@
                                    :class="error ? 'border-red-500' : 'border-gray-300'"
                                    class="w-full px-4 py-3 rounded-lg border focus:border-[#001233] focus:ring-[#001233] transition"
                                    placeholder="Your Name">
-                            <p x-show="displayError" x-text="error || serverError" class="text-red-500 text-xs mt-1"></p>
+                            <p x-show="displayError" x-text="errorMessage" class="text-red-500 text-xs mt-1"></p>
                         </div>
 
                         {{-- Email --}}
@@ -92,6 +95,9 @@
                             },
                             get displayError() {
                                 return this.error || this.serverError;
+                            },
+                            get errorMessage() {
+                                return this.error || this.serverError || '';
                             }
                         }">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Email</label>
@@ -101,7 +107,7 @@
                                    :class="error ? 'border-red-500' : 'border-gray-300'"
                                    class="w-full px-4 py-3 rounded-lg border focus:border-[#001233] focus:ring-[#001233] transition"
                                    placeholder="email@example.com">
-                            <p x-show="displayError" x-text="error || serverError" class="text-red-500 text-xs mt-1"></p>
+                            <p x-show="displayError" x-text="errorMessage" class="text-red-500 text-xs mt-1"></p>
                         </div>
 
                         {{-- ✅ ADDED: Subject Field --}}
@@ -117,6 +123,9 @@
                             },
                             get displayError() {
                                 return this.error || this.serverError;
+                            },
+                            get errorMessage() {
+                                return this.error || this.serverError || '';
                             }
                         }">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Subject</label>
@@ -126,7 +135,7 @@
                                    :class="error ? 'border-red-500' : 'border-gray-300'"
                                    class="w-full px-4 py-3 rounded-lg border focus:border-[#001233] focus:ring-[#001233] transition"
                                    placeholder="e.g. Lost Item, Refund, General Inquiry">
-                            <p x-show="displayError" x-text="error || serverError" class="text-red-500 text-xs mt-1"></p>
+                            <p x-show="displayError" x-text="errorMessage" class="text-red-500 text-xs mt-1"></p>
                         </div>
 
                         {{-- Message --}}
@@ -142,6 +151,9 @@
                             },
                             get displayError() {
                                 return this.error || this.serverError;
+                            },
+                            get errorMessage() {
+                                return this.error || this.serverError || '';
                             }
                         }">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Message</label>
@@ -151,7 +163,7 @@
                                       :class="error ? 'border-red-500' : 'border-gray-300'"
                                       class="w-full px-4 py-3 rounded-lg border focus:border-[#001233] focus:ring-[#001233] transition"
                                       placeholder="How can we help?">{{ old('message') }}</textarea>
-                            <p x-show="displayError" x-text="error || serverError" class="text-red-500 text-xs mt-1"></p>
+                            <p x-show="displayError" x-text="errorMessage" class="text-red-500 text-xs mt-1"></p>
                         </div>
 
                         {{-- Submit Button --}}

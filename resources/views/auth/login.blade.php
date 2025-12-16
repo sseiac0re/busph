@@ -36,8 +36,7 @@
                 x-on:blur="validate($event.target.value)"
                 :class="error ? 'border-red-500' : 'border-transparent'"
                 class="block w-full px-4 py-3.5 rounded-xl bg-[#F0F2F5] border focus:border-[#001233] focus:bg-white focus:ring-0 transition shadow-sm" />
-            <x-input-error :messages="$errors->get('email')" :field="'email'" class="mt-2" />
-            <p x-show="error" x-text="error" class="text-sm text-red-600 mt-2"></p>
+            <x-input-error :messages="$errors->get('email')" :field="'email'" />
         </div>
 
         <div x-data="{ 
@@ -103,8 +102,7 @@
                     </svg>
                 </button>
             </div>
-            <x-input-error :messages="$errors->get('password')" :field="'password'" class="mt-2" />
-            <p x-show="error" x-text="error" class="text-sm text-red-600 mt-2"></p>
+            <x-input-error :messages="$errors->get('password')" :field="'password'" />
         </div>
 
         <div class="flex justify-end">

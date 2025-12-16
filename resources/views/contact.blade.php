@@ -67,8 +67,7 @@
                                    :class="error ? 'border-red-500' : 'border-gray-300'"
                                    class="w-full px-4 py-3 rounded-lg border focus:border-[#001233] focus:ring-[#001233] transition"
                                    placeholder="Your Name">
-                            <p x-show="error" x-text="error" class="text-red-500 text-xs mt-1"></p>
-                            @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            <x-input-error :messages="$errors->get('name')" :field="'name'" class="text-xs" />
                         </div>
 
                         {{-- Email --}}
@@ -94,8 +93,7 @@
                                    :class="error ? 'border-red-500' : 'border-gray-300'"
                                    class="w-full px-4 py-3 rounded-lg border focus:border-[#001233] focus:ring-[#001233] transition"
                                    placeholder="email@example.com">
-                            <p x-show="error" x-text="error" class="text-red-500 text-xs mt-1"></p>
-                            @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            <x-input-error :messages="$errors->get('email')" :field="'email'" class="text-xs" />
                         </div>
 
                         {{-- ✅ ADDED: Subject Field --}}
@@ -116,8 +114,7 @@
                                    :class="error ? 'border-red-500' : 'border-gray-300'"
                                    class="w-full px-4 py-3 rounded-lg border focus:border-[#001233] focus:ring-[#001233] transition"
                                    placeholder="e.g. Lost Item, Refund, General Inquiry">
-                            <p x-show="error" x-text="error" class="text-red-500 text-xs mt-1"></p>
-                            @error('subject') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            <x-input-error :messages="$errors->get('subject')" :field="'subject'" class="text-xs" />
                         </div>
 
                         {{-- Message --}}
@@ -138,8 +135,7 @@
                                       :class="error ? 'border-red-500' : 'border-gray-300'"
                                       class="w-full px-4 py-3 rounded-lg border focus:border-[#001233] focus:ring-[#001233] transition"
                                       placeholder="How can we help?">{{ old('message') }}</textarea>
-                            <p x-show="error" x-text="error" class="text-red-500 text-xs mt-1"></p>
-                            @error('message') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            <x-input-error :messages="$errors->get('message')" :field="'message'" class="text-xs" />
                         </div>
 
                         {{-- Submit Button --}}

@@ -2,35 +2,27 @@
 
 @php
     $hasServerErrors = $messages && count((array) $messages) > 0;
+    $serverError = $hasServerErrors ? (array) $messages[0] : null;
 @endphp
 
-<div 
-    @if($field)
-    x-data="{ 
-        error: null,
-        serverError: @js($hasServerErrors ? (array) $messages[0] : null),
-        get displayError() {
-            return this.error || this.serverError;
-        }
-    }"
-    x-show="displayError"
-    @endif
-    {{ $attributes->merge(['class' => 'text-sm text-red-600 dark:text-red-400 space-y-1']) }}
->
-    @if ($field)
-        <template x-if="error">
-            <p x-text="error"></p>
-        </template>
-        <template x-if="serverError && !error">
-            <p x-text="serverError"></p>
-        </template>
-    @else
-        @if ($messages)
+@if($field)
+    {{-- Real-time validation component - uses parent x-data scope --}}
+    <div 
+        x-show="error || @js($serverError)"
+        {{ $attributes->merge(['class' => 'text-sm text-red-600 dark:text-red-400 mt-2']) }}
+    >
+        <p x-show="error" x-text="error"></p>
+        <p x-show="@js($serverError) && !error" x-text="@js($serverError)"></p>
+    </div>
+@else
+    {{-- Standard error display for non-real-time fields --}}
+    @if ($messages)
+        <div {{ $attributes->merge(['class' => 'text-sm text-red-600 dark:text-red-400 space-y-1 mt-2']) }}>
             <ul>
                 @foreach ((array) $messages as $message)
                     <li>{{ $message }}</li>
                 @endforeach
             </ul>
-        @endif
+        </div>
     @endif
-</div>
+@endif

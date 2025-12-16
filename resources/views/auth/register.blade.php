@@ -35,8 +35,7 @@
                 x-on:blur="validate($event.target.value)"
                 :class="error ? 'border-red-500' : 'border-transparent'"
                 class="block w-full px-4 py-3 rounded-lg bg-[#F3F4F6] border focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" />
-            <x-input-error :messages="$errors->get('name')" :field="'name'" class="mt-2" />
-            <p x-show="error" x-text="error" class="text-sm text-red-600 mt-2"></p>
+            <x-input-error :messages="$errors->get('name')" :field="'name'" />
         </div>
 
         <div x-data="{ 
@@ -79,8 +78,7 @@
                     </svg>
                 </label>
             </div>
-            <x-input-error :messages="$errors->get('valid_id')" :field="'valid_id'" class="mt-2" />
-            <p x-show="error" x-text="error" class="text-sm text-red-600 mt-2"></p>
+            <x-input-error :messages="$errors->get('valid_id')" :field="'valid_id'" />
         </div>
 
         <div x-data="{ 
@@ -104,8 +102,7 @@
                 x-on:blur="validate($event.target.value)"
                 :class="error ? 'border-red-500' : 'border-transparent'"
                 class="block w-full px-4 py-3 rounded-lg bg-[#F3F4F6] border focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" />
-            <x-input-error :messages="$errors->get('email')" :field="'email'" class="mt-2" />
-            <p x-show="error" x-text="error" class="text-sm text-red-600 mt-2"></p>
+            <x-input-error :messages="$errors->get('email')" :field="'email'" />
         </div>
 
         <div x-data="{ 
@@ -173,8 +170,7 @@
                     </svg>
                 </button>
             </div>
-            <x-input-error :messages="$errors->get('password')" :field="'password'" class="mt-2" />
-            <p x-show="error" x-text="error" class="text-sm text-red-600 mt-2"></p>
+            <x-input-error :messages="$errors->get('password')" :field="'password'" />
         </div>
 
         <div x-data="{ 
@@ -244,7 +240,7 @@
                     </svg>
                 </button>
             </div>
-            <p x-show="error" x-text="error" class="text-sm text-red-600 mt-2"></p>
+            <x-input-error :messages="$errors->get('password_confirmation')" :field="'password_confirmation'" />
         </div>
 
         <div class="flex items-start pt-2">

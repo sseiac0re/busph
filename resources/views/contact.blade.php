@@ -56,12 +56,11 @@
                             validate(value) {
                                 if (!value || value.trim().length === 0) {
                                     this.error = 'Name is required.';
+                                    this.serverError = null;
                                 } else {
                                     this.error = null;
+                                    this.serverError = null;
                                 }
-                            },
-                            get displayError() {
-                                return this.error || this.serverError;
                             },
                             get errorMessage() {
                                 return this.error || this.serverError || '';
@@ -74,7 +73,7 @@
                                    :class="error ? 'border-red-500' : 'border-gray-300'"
                                    class="w-full px-4 py-3 rounded-lg border focus:border-[#001233] focus:ring-[#001233] transition"
                                    placeholder="Your Name">
-                            <p x-show="displayError" x-text="errorMessage" class="text-red-500 text-xs mt-1"></p>
+                            <p x-show="errorMessage" x-text="errorMessage" class="text-red-500 text-xs mt-1"></p>
                         </div>
 
                         {{-- Email --}}
@@ -84,17 +83,17 @@
                             validate(value) {
                                 if (!value || value.trim().length === 0) {
                                     this.error = 'Email is required.';
+                                    this.serverError = null;
                                 } else {
                                     const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail|yahoo|hotmail|outlook|busph|email)\.com$/i;
                                     if (!emailRegex.test(value)) {
                                         this.error = 'Please enter a valid email address (gmail.com, yahoo.com, hotmail.com, outlook.com, busph.com, or email.com).';
+                                        this.serverError = null;
                                     } else {
                                         this.error = null;
+                                        this.serverError = null;
                                     }
                                 }
-                            },
-                            get displayError() {
-                                return this.error || this.serverError;
                             },
                             get errorMessage() {
                                 return this.error || this.serverError || '';
@@ -107,7 +106,7 @@
                                    :class="error ? 'border-red-500' : 'border-gray-300'"
                                    class="w-full px-4 py-3 rounded-lg border focus:border-[#001233] focus:ring-[#001233] transition"
                                    placeholder="email@example.com">
-                            <p x-show="displayError" x-text="errorMessage" class="text-red-500 text-xs mt-1"></p>
+                            <p x-show="errorMessage" x-text="errorMessage" class="text-red-500 text-xs mt-1"></p>
                         </div>
 
                         {{-- ✅ ADDED: Subject Field --}}
@@ -117,12 +116,11 @@
                             validate(value) {
                                 if (!value || value.trim().length === 0) {
                                     this.error = 'Subject is required.';
+                                    this.serverError = null;
                                 } else {
                                     this.error = null;
+                                    this.serverError = null;
                                 }
-                            },
-                            get displayError() {
-                                return this.error || this.serverError;
                             },
                             get errorMessage() {
                                 return this.error || this.serverError || '';
@@ -135,7 +133,7 @@
                                    :class="error ? 'border-red-500' : 'border-gray-300'"
                                    class="w-full px-4 py-3 rounded-lg border focus:border-[#001233] focus:ring-[#001233] transition"
                                    placeholder="e.g. Lost Item, Refund, General Inquiry">
-                            <p x-show="displayError" x-text="errorMessage" class="text-red-500 text-xs mt-1"></p>
+                            <p x-show="errorMessage" x-text="errorMessage" class="text-red-500 text-xs mt-1"></p>
                         </div>
 
                         {{-- Message --}}
@@ -145,12 +143,11 @@
                             validate(value) {
                                 if (!value || value.trim().length === 0) {
                                     this.error = 'Message is required.';
+                                    this.serverError = null;
                                 } else {
                                     this.error = null;
+                                    this.serverError = null;
                                 }
-                            },
-                            get displayError() {
-                                return this.error || this.serverError;
                             },
                             get errorMessage() {
                                 return this.error || this.serverError || '';
@@ -163,7 +160,7 @@
                                       :class="error ? 'border-red-500' : 'border-gray-300'"
                                       class="w-full px-4 py-3 rounded-lg border focus:border-[#001233] focus:ring-[#001233] transition"
                                       placeholder="How can we help?">{{ old('message') }}</textarea>
-                            <p x-show="displayError" x-text="errorMessage" class="text-red-500 text-xs mt-1"></p>
+                            <p x-show="errorMessage" x-text="errorMessage" class="text-red-500 text-xs mt-1"></p>
                         </div>
 
                         {{-- Submit Button --}}

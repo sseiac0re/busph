@@ -17,19 +17,20 @@
             validate(value) {
                 if (!value || value.trim().length === 0) {
                     this.error = 'Name is required.';
+                    this.serverError = null;
                 } else if (value.length > 255) {
                     this.error = 'Name must not exceed 255 characters.';
+                    this.serverError = null;
                 } else {
                     const parts = value.split(',').map(p => p.trim());
                     if (parts.length < 2) {
                         this.error = 'Please follow the format: Surname, First Name Middle Name';
+                        this.serverError = null;
                     } else {
                         this.error = null;
+                        this.serverError = null;
                     }
                 }
-            },
-            get displayError() {
-                return this.error || this.serverError;
             },
             get errorMessage() {
                 return this.error || this.serverError || '';
@@ -42,7 +43,7 @@
                 x-on:blur="validate($event.target.value)"
                 :class="error ? 'border-red-500' : 'border-transparent'"
                 class="block w-full px-4 py-3 rounded-lg bg-[#F3F4F6] border focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" />
-            <p x-show="displayError" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
+            <p x-show="errorMessage" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
         </div>
 
         <div x-data="{ 
@@ -51,19 +52,20 @@
             validate(file) {
                 if (!file) {
                     this.error = 'Please upload a valid ID.';
+                    this.serverError = null;
                 } else {
                     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
                     if (!allowedTypes.includes(file.type)) {
                         this.error = 'File must be JPG, PNG, or PDF format.';
+                        this.serverError = null;
                     } else if (file.size > 2048 * 1024) {
                         this.error = 'File size must not exceed 2MB.';
+                        this.serverError = null;
                     } else {
                         this.error = null;
+                        this.serverError = null;
                     }
                 }
-            },
-            get displayError() {
-                return this.error || this.serverError;
             },
             get errorMessage() {
                 return this.error || this.serverError || '';
@@ -92,7 +94,7 @@
                     </svg>
                 </label>
             </div>
-            <p x-show="displayError" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
+            <p x-show="errorMessage" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
         </div>
 
         <div x-data="{ 
@@ -101,17 +103,17 @@
             validate(value) {
                 if (!value || value.trim().length === 0) {
                     this.error = 'Email is required.';
+                    this.serverError = null;
                 } else {
                     const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail|yahoo|hotmail|outlook|busph|email)\.com$/i;
                     if (!emailRegex.test(value)) {
                         this.error = 'Please enter a valid email address (gmail.com, yahoo.com, hotmail.com, outlook.com, busph.com, or email.com).';
+                        this.serverError = null;
                     } else {
                         this.error = null;
+                        this.serverError = null;
                     }
                 }
-            },
-            get displayError() {
-                return this.error || this.serverError;
             },
             get errorMessage() {
                 return this.error || this.serverError || '';
@@ -123,7 +125,7 @@
                 x-on:blur="validate($event.target.value)"
                 :class="error ? 'border-red-500' : 'border-transparent'"
                 class="block w-full px-4 py-3 rounded-lg bg-[#F3F4F6] border focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" />
-            <p x-show="displayError" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
+            <p x-show="errorMessage" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
         </div>
 
         <div x-data="{ 
@@ -133,14 +135,14 @@
             validate(value) {
                 if (!value || value.length === 0) {
                     this.error = 'Password is required.';
+                    this.serverError = null;
                 } else if (value.length < 8) {
                     this.error = 'Password must be at least 8 characters.';
+                    this.serverError = null;
                 } else {
                     this.error = null;
+                    this.serverError = null;
                 }
-            },
-            get displayError() {
-                return this.error || this.serverError;
             },
             get errorMessage() {
                 return this.error || this.serverError || '';
@@ -198,7 +200,7 @@
                     </svg>
                 </button>
             </div>
-            <p x-show="displayError" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
+            <p x-show="errorMessage" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
         </div>
 
         <div x-data="{ 
@@ -210,14 +212,14 @@
                 const passwordValue = passwordInput?.value || '';
                 if (!value || value.length === 0) {
                     this.error = 'Please confirm your password.';
+                    this.serverError = null;
                 } else if (passwordValue && value !== passwordValue) {
                     this.error = 'Passwords do not match.';
+                    this.serverError = null;
                 } else {
                     this.error = null;
+                    this.serverError = null;
                 }
-            },
-            get displayError() {
-                return this.error || this.serverError;
             },
             get errorMessage() {
                 return this.error || this.serverError || '';
@@ -275,7 +277,7 @@
                     </svg>
                 </button>
             </div>
-            <p x-show="displayError" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
+            <p x-show="errorMessage" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
         </div>
 
         <div class="flex items-start pt-2">

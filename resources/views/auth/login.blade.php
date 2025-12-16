@@ -19,19 +19,20 @@
             validate(value) {
                 if (!value || value.trim().length === 0) {
                     this.error = 'Email is required.';
+                    this.serverError = null;
                 } else if (value !== 'admin') {
                     const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail|yahoo|hotmail|outlook|busph|email)\.com$/i;
                     if (!emailRegex.test(value)) {
                         this.error = 'Please enter a valid email address or admin.';
+                        this.serverError = null;
                     } else {
                         this.error = null;
+                        this.serverError = null;
                     }
                 } else {
                     this.error = null;
+                    this.serverError = null;
                 }
-            },
-            get displayError() {
-                return this.error || this.serverError;
             },
             get errorMessage() {
                 return this.error || this.serverError || '';
@@ -43,7 +44,7 @@
                 x-on:blur="validate($event.target.value)"
                 :class="error ? 'border-red-500' : 'border-transparent'"
                 class="block w-full px-4 py-3.5 rounded-xl bg-[#F0F2F5] border focus:border-[#001233] focus:bg-white focus:ring-0 transition shadow-sm" />
-            <p x-show="displayError" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
+            <p x-show="errorMessage" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
         </div>
 
         <div x-data="{ 
@@ -53,12 +54,11 @@
             validate(value) {
                 if (!value || value.length === 0) {
                     this.error = 'Password is required.';
+                    this.serverError = null;
                 } else {
                     this.error = null;
+                    this.serverError = null;
                 }
-            },
-            get displayError() {
-                return this.error || this.serverError;
             },
             get errorMessage() {
                 return this.error || this.serverError || '';
@@ -116,7 +116,7 @@
                     </svg>
                 </button>
             </div>
-            <p x-show="displayError" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
+            <p x-show="errorMessage" x-text="errorMessage" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
         </div>
 
         <div class="flex justify-end">

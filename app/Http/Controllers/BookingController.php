@@ -155,7 +155,11 @@ class BookingController extends Controller
         $basePrice = $schedule->route->price;
         foreach ($request->passengers as $p) {
             $isChild = ($p['type'] === 'child');
-            $price = $isChild ? ($basePrice * 0.80) : $basePrice; 
+            $discountId = $p['discount_id'] ?? '';
+            $hasValidId = !empty($discountId) && preg_match('/^\d{4}-\d{4}$/', $discountId);
+            
+            // Apply 20% discount for children OR adults with valid discount ID
+            $price = ($isChild || $hasValidId) ? ($basePrice * 0.80) : $basePrice; 
             $totalPrice += $price;
 
             $breakdown[] = [
@@ -181,7 +185,11 @@ class BookingController extends Controller
             foreach ($passengerList as $index => $p) {
                 if (isset($outSeats[$index])) {
                     $isChild = ($p['type'] === 'child');
-                    $price = $isChild ? ($outPrice * 0.80) : $outPrice; 
+                    $discountId = $p['discount_id'] ?? '';
+                    $hasValidId = !empty($discountId) && preg_match('/^\d{4}-\d{4}$/', $discountId);
+                    
+                    // Apply 20% discount for children OR adults with valid discount ID
+                    $price = ($isChild || $hasValidId) ? ($outPrice * 0.80) : $outPrice; 
                     $totalPrice += $price;
 
                     $breakdown[] = [

@@ -51,13 +51,6 @@
                 }
             },
 
-            toggleTripType() {
-                this.tripType = this.tripType === 'one_way' ? 'round_trip' : 'one_way';
-                // Force Alpine to recalculate by accessing the reactive property
-                this.$nextTick(() => {
-                    // This ensures the getter is re-evaluated
-                });
-            },
 
             get totalPassengers() { return this.adults + this.children; },
             get totalPrice() { 
@@ -172,15 +165,17 @@
                             
                             {{-- TRIP TYPE TOGGLE --}}
                             @if(!request('is_return'))
-                                <div class="bg-gray-100 p-1 rounded-lg flex mb-6 cursor-pointer" @click="toggleTripType()">
-                                    <div class="flex-1 py-1.5 rounded-md text-xs font-bold text-center transition-all" 
-                                         :class="tripType === 'one_way' ? 'bg-white text-[#001233] shadow-sm' : 'text-gray-500'">
+                                <div class="bg-gray-100 p-1 rounded-lg flex mb-6">
+                                    <button type="button" @click="tripType = 'one_way'" 
+                                            class="flex-1 py-1.5 rounded-md text-xs font-bold text-center transition-all" 
+                                            :class="tripType === 'one_way' ? 'bg-white text-[#001233] shadow-sm' : 'text-gray-500'">
                                         One Way
-                                    </div>
-                                    <div class="flex-1 py-1.5 rounded-md text-xs font-bold text-center transition-all" 
-                                         :class="tripType === 'round_trip' ? 'bg-white text-[#001233] shadow-sm' : 'text-gray-500'">
+                                    </button>
+                                    <button type="button" @click="tripType = 'round_trip'" 
+                                            class="flex-1 py-1.5 rounded-md text-xs font-bold text-center transition-all" 
+                                            :class="tripType === 'round_trip' ? 'bg-white text-[#001233] shadow-sm' : 'text-gray-500'">
                                         Round Trip
-                                    </div>
+                                    </button>
                                 </div>
                             @endif
 

@@ -18,11 +18,8 @@
             price: {{ $schedule->route->price }},
             tripType: '{{ request('trip_type', 'one_way') }}',
             
-            init() {
-                // Ensure reactivity
-                this.$watch('tripType', () => {
-                    // Force recalculation when tripType changes
-                });
+            updateTripType(newType) {
+                this.tripType = newType;
             },
             
             toggleSeat(seat) {
@@ -66,11 +63,8 @@
                 const oneWayPrice = (this.adults * this.price) + (this.children * (this.price * 0.8));
                 
                 // Round trip means two trips (outbound + return), so multiply by 2
-                if (this.tripType === 'round_trip') {
-                    return (oneWayPrice * 2).toLocaleString('en-US', {minimumFractionDigits: 2});
-                } else {
-                    return oneWayPrice.toLocaleString('en-US', {minimumFractionDigits: 2});
-                }
+                const finalPrice = this.tripType === 'round_trip' ? oneWayPrice * 2 : oneWayPrice;
+                return finalPrice.toLocaleString('en-US', {minimumFractionDigits: 2});
             }
          }">
 
@@ -174,12 +168,12 @@
                             {{-- TRIP TYPE TOGGLE --}}
                             @if(!request('is_return'))
                                 <div class="bg-gray-100 p-1 rounded-lg flex mb-6">
-                                    <button type="button" @click="$data.tripType = 'one_way'; $forceUpdate()" 
+                                    <button type="button" @click="updateTripType('one_way')" 
                                             class="flex-1 py-1.5 rounded-md text-xs font-bold text-center transition-all" 
                                             :class="tripType === 'one_way' ? 'bg-white text-[#001233] shadow-sm' : 'text-gray-500'">
                                         One Way
                                     </button>
-                                    <button type="button" @click="$data.tripType = 'round_trip'; $forceUpdate()" 
+                                    <button type="button" @click="updateTripType('round_trip')" 
                                             class="flex-1 py-1.5 rounded-md text-xs font-bold text-center transition-all" 
                                             :class="tripType === 'round_trip' ? 'bg-white text-[#001233] shadow-sm' : 'text-gray-500'">
                                         Round Trip

@@ -22,4 +22,11 @@ class ScheduleRepository implements ScheduleRepositoryInterface
     {
         return Schedule::destroy($id);
     }
+
+    public function updateSchedule($id, array $data)
+    {
+        $schedule = Schedule::findOrFail($id);
+        $schedule->update($data);
+        return $schedule;
+    }
 }

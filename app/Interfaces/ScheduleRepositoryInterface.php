@@ -6,5 +6,6 @@ interface ScheduleRepositoryInterface
 {
     public function getAllSchedules();
     public function createSchedule(array $data);
+    public function updateSchedule($id, array $data);
     public function deleteSchedule($id);
 }

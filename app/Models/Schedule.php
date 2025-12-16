@@ -23,6 +23,18 @@ class Schedule extends Model
         'arrival_time'   => 'datetime',
     ];
     
+    // Accessor for departure date only
+    public function getDepartureDateAttribute()
+    {
+        return $this->departure_time ? $this->departure_time->format('Y-m-d') : null;
+    }
+    
+    // Accessor for departure time only (HH:mm format)
+    public function getDepartureTimeOnlyAttribute()
+    {
+        return $this->departure_time ? $this->departure_time->format('H:i') : null;
+    }
+    
     // Relationship: A Schedule belongs to one Bus
     public function bus()
     {

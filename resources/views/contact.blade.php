@@ -52,12 +52,16 @@
                         {{-- Name --}}
                         <div class="mb-6" x-data="{ 
                             error: null,
+                            serverError: @js($errors->get('name')->first()),
                             validate(value) {
                                 if (!value || value.trim().length === 0) {
                                     this.error = 'Name is required.';
                                 } else {
                                     this.error = null;
                                 }
+                            },
+                            get displayError() {
+                                return this.error || this.serverError;
                             }
                         }">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Name</label>
@@ -67,12 +71,13 @@
                                    :class="error ? 'border-red-500' : 'border-gray-300'"
                                    class="w-full px-4 py-3 rounded-lg border focus:border-[#001233] focus:ring-[#001233] transition"
                                    placeholder="Your Name">
-                            <x-input-error :messages="$errors->get('name')" :field="'name'" class="text-xs" />
+                            <p x-show="displayError" x-text="error || serverError" class="text-red-500 text-xs mt-1"></p>
                         </div>
 
                         {{-- Email --}}
                         <div class="mb-6" x-data="{ 
                             error: null,
+                            serverError: @js($errors->get('email')->first()),
                             validate(value) {
                                 if (!value || value.trim().length === 0) {
                                     this.error = 'Email is required.';
@@ -84,6 +89,9 @@
                                         this.error = null;
                                     }
                                 }
+                            },
+                            get displayError() {
+                                return this.error || this.serverError;
                             }
                         }">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Email</label>
@@ -93,18 +101,22 @@
                                    :class="error ? 'border-red-500' : 'border-gray-300'"
                                    class="w-full px-4 py-3 rounded-lg border focus:border-[#001233] focus:ring-[#001233] transition"
                                    placeholder="email@example.com">
-                            <x-input-error :messages="$errors->get('email')" :field="'email'" class="text-xs" />
+                            <p x-show="displayError" x-text="error || serverError" class="text-red-500 text-xs mt-1"></p>
                         </div>
 
                         {{-- ✅ ADDED: Subject Field --}}
                         <div class="mb-6" x-data="{ 
                             error: null,
+                            serverError: @js($errors->get('subject')->first()),
                             validate(value) {
                                 if (!value || value.trim().length === 0) {
                                     this.error = 'Subject is required.';
                                 } else {
                                     this.error = null;
                                 }
+                            },
+                            get displayError() {
+                                return this.error || this.serverError;
                             }
                         }">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Subject</label>
@@ -114,18 +126,22 @@
                                    :class="error ? 'border-red-500' : 'border-gray-300'"
                                    class="w-full px-4 py-3 rounded-lg border focus:border-[#001233] focus:ring-[#001233] transition"
                                    placeholder="e.g. Lost Item, Refund, General Inquiry">
-                            <x-input-error :messages="$errors->get('subject')" :field="'subject'" class="text-xs" />
+                            <p x-show="displayError" x-text="error || serverError" class="text-red-500 text-xs mt-1"></p>
                         </div>
 
                         {{-- Message --}}
                         <div class="mb-6" x-data="{ 
                             error: null,
+                            serverError: @js($errors->get('message')->first()),
                             validate(value) {
                                 if (!value || value.trim().length === 0) {
                                     this.error = 'Message is required.';
                                 } else {
                                     this.error = null;
                                 }
+                            },
+                            get displayError() {
+                                return this.error || this.serverError;
                             }
                         }">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Message</label>
@@ -135,7 +151,7 @@
                                       :class="error ? 'border-red-500' : 'border-gray-300'"
                                       class="w-full px-4 py-3 rounded-lg border focus:border-[#001233] focus:ring-[#001233] transition"
                                       placeholder="How can we help?">{{ old('message') }}</textarea>
-                            <x-input-error :messages="$errors->get('message')" :field="'message'" class="text-xs" />
+                            <p x-show="displayError" x-text="error || serverError" class="text-red-500 text-xs mt-1"></p>
                         </div>
 
                         {{-- Submit Button --}}

@@ -13,6 +13,7 @@
 
         <div x-data="{ 
             error: null,
+            serverError: @js($errors->get('name')->first()),
             validate(value) {
                 if (!value || value.trim().length === 0) {
                     this.error = 'Name is required.';
@@ -26,6 +27,9 @@
                         this.error = null;
                     }
                 }
+            },
+            get displayError() {
+                return this.error || this.serverError;
             }
         }">
             <label for="name" class="block text-lg text-[#001233] mb-1">Full Name:</label>
@@ -35,11 +39,12 @@
                 x-on:blur="validate($event.target.value)"
                 :class="error ? 'border-red-500' : 'border-transparent'"
                 class="block w-full px-4 py-3 rounded-lg bg-[#F3F4F6] border focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" />
-            <x-input-error :messages="$errors->get('name')" :field="'name'" />
+            <p x-show="displayError" x-text="error || serverError" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
         </div>
 
         <div x-data="{ 
             error: null,
+            serverError: @js($errors->get('valid_id')->first()),
             validate(file) {
                 if (!file) {
                     this.error = 'Please upload a valid ID.';
@@ -53,6 +58,9 @@
                         this.error = null;
                     }
                 }
+            },
+            get displayError() {
+                return this.error || this.serverError;
             }
         }">
             <label class="block text-lg text-[#001233] mb-1">Upload Valid ID:</label>
@@ -78,11 +86,12 @@
                     </svg>
                 </label>
             </div>
-            <x-input-error :messages="$errors->get('valid_id')" :field="'valid_id'" />
+            <p x-show="displayError" x-text="error || serverError" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
         </div>
 
         <div x-data="{ 
             error: null,
+            serverError: @js($errors->get('email')->first()),
             validate(value) {
                 if (!value || value.trim().length === 0) {
                     this.error = 'Email is required.';
@@ -94,6 +103,9 @@
                         this.error = null;
                     }
                 }
+            },
+            get displayError() {
+                return this.error || this.serverError;
             }
         }">
             <label for="email" class="block text-lg text-[#001233] mb-2">Email:</label>
@@ -102,12 +114,13 @@
                 x-on:blur="validate($event.target.value)"
                 :class="error ? 'border-red-500' : 'border-transparent'"
                 class="block w-full px-4 py-3 rounded-lg bg-[#F3F4F6] border focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" />
-            <x-input-error :messages="$errors->get('email')" :field="'email'" />
+            <p x-show="displayError" x-text="error || serverError" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
         </div>
 
         <div x-data="{ 
             show: false,
             error: null,
+            serverError: @js($errors->get('password')->first()),
             validate(value) {
                 if (!value || value.length === 0) {
                     this.error = 'Password is required.';
@@ -116,6 +129,9 @@
                 } else {
                     this.error = null;
                 }
+            },
+            get displayError() {
+                return this.error || this.serverError;
             }
         }">
             <label for="password" class="block text-lg text-[#001233] mb-2">Password:</label>
@@ -170,12 +186,13 @@
                     </svg>
                 </button>
             </div>
-            <x-input-error :messages="$errors->get('password')" :field="'password'" />
+            <p x-show="displayError" x-text="error || serverError" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
         </div>
 
         <div x-data="{ 
             show: false,
             error: null,
+            serverError: @js($errors->get('password_confirmation')->first()),
             validate(value) {
                 const passwordInput = document.querySelector('[name=password]');
                 const passwordValue = passwordInput?.value || '';
@@ -186,6 +203,9 @@
                 } else {
                     this.error = null;
                 }
+            },
+            get displayError() {
+                return this.error || this.serverError;
             }
         }">
             <label for="password_confirmation" class="block text-lg text-[#001233] mb-2">Confirm Password:</label>
@@ -240,7 +260,7 @@
                     </svg>
                 </button>
             </div>
-            <x-input-error :messages="$errors->get('password_confirmation')" :field="'password_confirmation'" />
+            <p x-show="displayError" x-text="error || serverError" class="text-sm text-red-600 dark:text-red-400 mt-2"></p>
         </div>
 
         <div class="flex items-start pt-2">

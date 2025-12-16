@@ -133,8 +133,12 @@ class ScheduleController extends Controller
             'bus_id' => $request->bus_id,
             'route_id' => $request->route_id,
             'departure_time' => $departureDatetime,
-            'status' => $request->status ?? 'active',
         ];
+        
+        // Only add status if the column exists in the database
+        if ($request->has('status')) {
+            $scheduleDetails['status'] = $request->status ?? 'active';
+        }
 
         $this->scheduleRepository->updateSchedule($schedule->id, $scheduleDetails);
 

@@ -20,18 +20,14 @@
             calculatedTotal: 0,
             
             init() {
-                // #region agent log
-                fetch('http://127.0.0.1:7242/ingest/10685c9d-a06c-4dd0-b21b-d0be18578391',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'seats.blade.php:init',message:'Alpine init called',data:{tripType:this.tripType,adults:this.adults,children:this.children,price:this.price},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
-                // #endregion
+                console.log('Alpine init', {tripType: this.tripType, adults: this.adults, children: this.children, price: this.price});
                 
                 // Calculate initial total
                 this.recalculateTotal();
                 
                 // Watch for changes and recalculate
                 this.$watch('tripType', (newVal, oldVal) => {
-                    // #region agent log
-                    fetch('http://127.0.0.1:7242/ingest/10685c9d-a06c-4dd0-b21b-d0be18578391',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'seats.blade.php:$watch(tripType)',message:'tripType watcher fired',data:{oldVal,newVal},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-                    // #endregion
+                    console.log('$watch tripType fired', {oldVal, newVal});
                     this.recalculateTotal();
                 });
                 this.$watch('adults', () => {
@@ -43,11 +39,8 @@
             },
             
             recalculateTotal() {
-                // #region agent log
                 const beforeTotal = this.calculatedTotal;
-                const currentTripType = this.tripType;
-                fetch('http://127.0.0.1:7242/ingest/10685c9d-a06c-4dd0-b21b-d0be18578391',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'seats.blade.php:recalculateTotal:entry',message:'recalculateTotal called',data:{beforeTotal,tripType:currentTripType,adults:this.adults,children:this.children,price:this.price},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-                // #endregion
+                console.log('recalculateTotal called', {beforeTotal, tripType: this.tripType, adults: this.adults, children: this.children, price: this.price});
                 
                 // Calculate base price for one trip
                 const oneWayPrice = (this.adults * this.price) + (this.children * (this.price * 0.8));
@@ -55,32 +48,22 @@
                 // Round trip means two trips (outbound + return), so multiply by 2
                 const finalPrice = this.tripType === 'round_trip' ? oneWayPrice * 2 : oneWayPrice;
                 
+                console.log('Price calculation', {oneWayPrice, finalPrice, isRoundTrip: this.tripType === 'round_trip'});
+                
                 // Update the reactive property
                 this.calculatedTotal = finalPrice;
                 
-                // #region agent log
-                fetch('http://127.0.0.1:7242/ingest/10685c9d-a06c-4dd0-b21b-d0be18578391',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'seats.blade.php:recalculateTotal:exit',message:'recalculateTotal completed',data:{beforeTotal,afterTotal:this.calculatedTotal,oneWayPrice,finalPrice,tripType:this.tripType},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-                // #endregion
+                console.log('recalculateTotal completed', {beforeTotal, afterTotal: this.calculatedTotal});
             },
             
             updateTripType(newType) {
-                // #region agent log
-                const oldTripType = this.tripType;
-                const oldTotal = this.calculatedTotal;
-                fetch('http://127.0.0.1:7242/ingest/10685c9d-a06c-4dd0-b21b-d0be18578391',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'seats.blade.php:updateTripType:entry',message:'updateTripType called',data:{oldTripType,newType,oldTotal},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-                // #endregion
+                console.log('updateTripType called', {oldType: this.tripType, newType, oldTotal: this.calculatedTotal});
                 
                 this.tripType = newType;
-                
-                // #region agent log
-                fetch('http://127.0.0.1:7242/ingest/10685c9d-a06c-4dd0-b21b-d0be18578391',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'seats.blade.php:updateTripType:afterAssignment',message:'tripType assigned',data:{tripType:this.tripType,newType},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-                // #endregion
+                console.log('tripType set to:', this.tripType);
                 
                 this.recalculateTotal();
-                
-                // #region agent log
-                fetch('http://127.0.0.1:7242/ingest/10685c9d-a06c-4dd0-b21b-d0be18578391',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'seats.blade.php:updateTripType:exit',message:'updateTripType completed',data:{tripType:this.tripType,calculatedTotal:this.calculatedTotal},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-                // #endregion
+                console.log('After recalculateTotal:', {tripType: this.tripType, calculatedTotal: this.calculatedTotal, formattedTotal: this.formattedTotal});
             },
             
             toggleSeat(seat) {
@@ -122,11 +105,9 @@
             get totalPassengers() { return this.adults + this.children; },
             
             get formattedTotal() {
-                // #region agent log
                 const total = this.calculatedTotal;
                 const formatted = total.toLocaleString('en-US', {minimumFractionDigits: 2});
-                fetch('http://127.0.0.1:7242/ingest/10685c9d-a06c-4dd0-b21b-d0be18578391',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'seats.blade.php:formattedTotal',message:'formattedTotal getter accessed',data:{calculatedTotal:total,formatted,tripType:this.tripType},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
-                // #endregion
+                console.log('formattedTotal accessed', {calculatedTotal: total, formatted, tripType: this.tripType});
                 return formatted;
             }
          }">
@@ -231,12 +212,12 @@
                             {{-- TRIP TYPE TOGGLE --}}
                             @if(!request('is_return'))
                                 <div class="bg-gray-100 p-1 rounded-lg flex mb-6">
-                                    <button type="button" @click="updateTripType('one_way'); fetch('http://127.0.0.1:7242/ingest/10685c9d-a06c-4dd0-b21b-d0be18578391',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'seats.blade.php:button:one_way',message:'One Way button clicked',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{})" 
+                                    <button type="button" @click="console.log('One Way clicked'); updateTripType('one_way')" 
                                             class="flex-1 py-1.5 rounded-md text-xs font-bold text-center transition-all" 
                                             :class="tripType === 'one_way' ? 'bg-white text-[#001233] shadow-sm' : 'text-gray-500'">
                                         One Way
                                     </button>
-                                    <button type="button" @click="updateTripType('round_trip'); fetch('http://127.0.0.1:7242/ingest/10685c9d-a06c-4dd0-b21b-d0be18578391',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'seats.blade.php:button:round_trip',message:'Round Trip button clicked',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{})" 
+                                    <button type="button" @click="console.log('Round Trip clicked'); updateTripType('round_trip')" 
                                             class="flex-1 py-1.5 rounded-md text-xs font-bold text-center transition-all" 
                                             :class="tripType === 'round_trip' ? 'bg-white text-[#001233] shadow-sm' : 'text-gray-500'">
                                         Round Trip

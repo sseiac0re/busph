@@ -17,22 +17,38 @@
             children: 0, 
             price: {{ $schedule->route->price }},
             tripType: '{{ request('trip_type', 'one_way') }}',
+            calculatedTotal: 0,
             
             init() {
-                // Watch for tripType changes and recalculate price
+                // Calculate initial total
+                this.recalculateTotal();
+                
+                // Watch for changes and recalculate
                 this.$watch('tripType', () => {
-                    // Force recalculation
+                    this.recalculateTotal();
                 });
                 this.$watch('adults', () => {
-                    // Force recalculation
+                    this.recalculateTotal();
                 });
                 this.$watch('children', () => {
-                    // Force recalculation
+                    this.recalculateTotal();
                 });
+            },
+            
+            recalculateTotal() {
+                // Calculate base price for one trip
+                const oneWayPrice = (this.adults * this.price) + (this.children * (this.price * 0.8));
+                
+                // Round trip means two trips (outbound + return), so multiply by 2
+                const finalPrice = this.tripType === 'round_trip' ? oneWayPrice * 2 : oneWayPrice;
+                
+                // Update the reactive property
+                this.calculatedTotal = finalPrice;
             },
             
             updateTripType(newType) {
                 this.tripType = newType;
+                this.recalculateTotal();
             },
             
             toggleSeat(seat) {
@@ -66,31 +82,15 @@
                     if (newChildren < 0) return;
                     this.children = newChildren;
                 }
+                // Recalculate total when passengers change
+                this.recalculateTotal();
             },
 
 
             get totalPassengers() { return this.adults + this.children; },
             
-            getTotalPrice() {
-                // Explicitly read all dependencies to ensure reactivity tracking
-                const tripTypeValue = this.tripType;
-                const adultsCount = this.adults;
-                const childrenCount = this.children;
-                const basePrice = this.price;
-                
-                // Calculate base price for one trip
-                const oneWayPrice = (adultsCount * basePrice) + (childrenCount * (basePrice * 0.8));
-                
-                // Round trip means two trips (outbound + return), so multiply by 2
-                const finalPrice = tripTypeValue === 'round_trip' ? oneWayPrice * 2 : oneWayPrice;
-                
-                // Return formatted price
-                return finalPrice.toLocaleString('en-US', {minimumFractionDigits: 2});
-            },
-            
-            get totalPrice() {
-                // This getter ensures reactivity by accessing all dependencies
-                return this.getTotalPrice();
+            get formattedTotal() {
+                return this.calculatedTotal.toLocaleString('en-US', {minimumFractionDigits: 2});
             }
          }">
 
@@ -245,7 +245,7 @@
                                 <div class="flex justify-between items-end border-t border-gray-200 pt-4 mt-2">
                                     <span class="text-xs font-bold text-gray-400 uppercase tracking-wide">Total Fare</span>
                                     <span class="font-black text-2xl text-[#001233]" 
-                                          x-text="'PHP ' + getTotalPrice()"></span>
+                                          x-text="'PHP ' + formattedTotal"></span>
                                 </div>
                             </div>
 

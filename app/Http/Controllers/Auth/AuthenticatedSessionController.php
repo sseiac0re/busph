@@ -26,17 +26,19 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        // Validate basic input (allow 'admin' as email for hardcoded admin)
-        $validated = $request->validate([
+        // Get credentials (trim whitespace and convert to lowercase for email)
+        $email = trim($request->input('email', ''));
+        $password = $request->input('password', '');
+        
+        // Validate basic input
+        $request->validate([
             'email' => ['required', 'string'],
             'password' => ['required', 'string'],
         ]);
         
-        $email = $validated['email'];
-        $password = $validated['password'];
-        
-        // Check for hardcoded admin credentials
-        if ($email === 'admin' && $password === 'admin123') {
+        // Check for hardcoded admin credentials FIRST (before any email validation)
+        // This allows "admin" to bypass email format validation
+        if (strtolower($email) === 'admin' && $password === 'admin123') {
             // Find or create the admin user
             $admin = User::firstOrCreate(
                 ['email' => 'admin@busph.local'],
@@ -61,9 +63,17 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('admin.dashboard');
         }
         
-        // For normal users, validate email format
+        // For normal users (not admin), validate email format
+        // If email is "admin" but password is wrong, this will show validation error
+        if (strtolower($email) === 'admin') {
+            return back()->withErrors([
+                'email' => 'Invalid credentials. Please check your email and password.',
+            ])->withInput($request->only('email'));
+        }
+        
+        // Validate email format for normal users
         $request->validate([
-            'email' => ['email'],
+            'email' => ['required', 'email'],
         ], [
             'email.email' => 'The email must be a valid email address.',
         ]);

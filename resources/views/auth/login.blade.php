@@ -15,7 +15,7 @@
 
         <div>
             <label for="email" class="block text-lg text-[#001233] mb-2">Email:</label>
-            <input id="email" pattern="^[a-zA-Z0-9._%+-]+@(gmail|yahoo|hotmail|outlook|busph|email)\.com$" type="email" name="email" :value="old('email')" required autofocus
+            <input id="email" type="text" name="email" :value="old('email')" required autofocus
                 class="block w-full px-4 py-3.5 rounded-xl bg-[#F0F2F5] border-transparent focus:border-[#001233] focus:bg-white focus:ring-0 transition shadow-sm" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>

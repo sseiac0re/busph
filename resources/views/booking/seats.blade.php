@@ -92,6 +92,12 @@
             
             get formattedTotal() {
                 return this.calculatedTotal.toLocaleString('en-US', {minimumFractionDigits: 2});
+            },
+            
+            getDisplayPrice() {
+                // This method is called directly in x-text to ensure reactivity
+                this.recalculateTotal();
+                return 'PHP ' + this.formattedTotal;
             }
          }">
 
@@ -246,8 +252,8 @@
                                 <div class="flex justify-between items-end border-t border-gray-200 pt-4 mt-2">
                                     <span class="text-xs font-bold text-gray-400 uppercase tracking-wide">Total Fare</span>
                                     <span class="font-black text-2xl text-[#001233]" 
-                                          x-text="'PHP ' + formattedTotal"
-                                          x-effect="tripType; calculatedTotal"></span>
+                                          x-text="getDisplayPrice()"
+                                          x-effect="tripType"></span>
                                 </div>
                             </div>
 

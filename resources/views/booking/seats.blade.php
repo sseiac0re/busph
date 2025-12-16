@@ -71,7 +71,7 @@
 
             get totalPassengers() { return this.adults + this.children; },
             
-            get totalPrice() {
+            getTotalPrice() {
                 // Explicitly read all dependencies to ensure reactivity tracking
                 const tripTypeValue = this.tripType;
                 const adultsCount = this.adults;
@@ -86,6 +86,11 @@
                 
                 // Return formatted price
                 return finalPrice.toLocaleString('en-US', {minimumFractionDigits: 2});
+            },
+            
+            get totalPrice() {
+                // This getter ensures reactivity by accessing all dependencies
+                return this.getTotalPrice();
             }
          }">
 
@@ -240,8 +245,7 @@
                                 <div class="flex justify-between items-end border-t border-gray-200 pt-4 mt-2">
                                     <span class="text-xs font-bold text-gray-400 uppercase tracking-wide">Total Fare</span>
                                     <span class="font-black text-2xl text-[#001233]" 
-                                          x-effect="tripType; adults; children"
-                                          x-text="'PHP ' + totalPrice"></span>
+                                          x-text="'PHP ' + getTotalPrice()"></span>
                                 </div>
                             </div>
 

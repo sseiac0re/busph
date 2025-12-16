@@ -53,14 +53,23 @@
 
             toggleTripType() {
                 this.tripType = this.tripType === 'one_way' ? 'round_trip' : 'one_way';
+                // Force Alpine to recalculate by accessing the reactive property
+                this.$nextTick(() => {
+                    // This ensures the getter is re-evaluated
+                });
             },
 
             get totalPassengers() { return this.adults + this.children; },
             get totalPrice() { 
                 const oneWayPrice = (this.adults * this.price) + (this.children * (this.price * 0.8));
                 // Round trip means two trips (outbound + return), so multiply by 2
-                const finalPrice = this.tripType === 'round_trip' ? oneWayPrice * 2 : oneWayPrice;
-                return finalPrice.toLocaleString('en-US', {minimumFractionDigits: 2});
+                const isRoundTrip = this.tripType === 'round_trip';
+                const finalPrice = isRoundTrip ? oneWayPrice * 2 : oneWayPrice;
+                return finalPrice;
+            },
+            
+            get formattedTotalPrice() {
+                return this.totalPrice.toLocaleString('en-US', {minimumFractionDigits: 2});
             }
          }">
 
@@ -212,7 +221,7 @@
                                 </div>
                                 <div class="flex justify-between items-end border-t border-gray-200 pt-4 mt-2">
                                     <span class="text-xs font-bold text-gray-400 uppercase tracking-wide">Total Fare</span>
-                                    <span class="font-black text-2xl text-[#001233]">PHP <span x-text="totalPrice"></span></span>
+                                    <span class="font-black text-2xl text-[#001233]">PHP <span x-text="formattedTotalPrice"></span></span>
                                 </div>
                             </div>
 

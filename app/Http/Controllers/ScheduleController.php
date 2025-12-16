@@ -109,7 +109,14 @@ class ScheduleController extends Controller
             'status' => ['nullable', 'in:active,cancelled'],
         ]);
 
-        $departureDatetime = Carbon::parse($request->departure_date . ' ' . $request->departure_time);
+        // Combine date and time into a single datetime field
+        try {
+            $departureDatetime = Carbon::createFromFormat('Y-m-d H:i', $request->departure_date . ' ' . $request->departure_time);
+        } catch (\Exception $e) {
+            throw ValidationException::withMessages([
+                'departure_time' => ['Invalid date or time format. Please check your input.'],
+            ]);
+        }
 
         $conflictingSchedule = Schedule::where('bus_id', $request->bus_id)
             ->where('departure_time', $departureDatetime)

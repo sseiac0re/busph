@@ -13,7 +13,7 @@
 
         <div x-data="{ 
             error: null,
-            serverError: @js($errors->get('name')->first()),
+            serverError: @js($errors->first('name')),
             validate(value) {
                 if (!value || value.trim().length === 0) {
                     this.error = 'Name is required.';
@@ -44,7 +44,7 @@
 
         <div x-data="{ 
             error: null,
-            serverError: @js($errors->get('valid_id')->first()),
+            serverError: @js($errors->first('valid_id')),
             validate(file) {
                 if (!file) {
                     this.error = 'Please upload a valid ID.';
@@ -91,7 +91,7 @@
 
         <div x-data="{ 
             error: null,
-            serverError: @js($errors->get('email')->first()),
+            serverError: @js($errors->first('email')),
             validate(value) {
                 if (!value || value.trim().length === 0) {
                     this.error = 'Email is required.';
@@ -120,7 +120,7 @@
         <div x-data="{ 
             show: false,
             error: null,
-            serverError: @js($errors->get('password')->first()),
+            serverError: @js($errors->first('password')),
             validate(value) {
                 if (!value || value.length === 0) {
                     this.error = 'Password is required.';
@@ -192,7 +192,7 @@
         <div x-data="{ 
             show: false,
             error: null,
-            serverError: @js($errors->get('password_confirmation')->first()),
+            serverError: @js($errors->first('password_confirmation')),
             validate(value) {
                 const passwordInput = document.querySelector('[name=password]');
                 const passwordValue = passwordInput?.value || '';

@@ -15,7 +15,7 @@
 
         <div x-data="{ 
             error: null,
-            serverError: @js($errors->get('email')->first()),
+            serverError: @js($errors->first('email')),
             validate(value) {
                 if (!value || value.trim().length === 0) {
                     this.error = 'Email is required.';
@@ -46,7 +46,7 @@
         <div x-data="{ 
             show: false,
             error: null,
-            serverError: @js($errors->get('password')->first()),
+            serverError: @js($errors->first('password')),
             validate(value) {
                 if (!value || value.length === 0) {
                     this.error = 'Password is required.';

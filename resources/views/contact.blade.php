@@ -52,7 +52,7 @@
                         {{-- Name --}}
                         <div class="mb-6" x-data="{ 
                             error: null,
-                            serverError: @js($errors->get('name')->first()),
+                            serverError: @js($errors->first('name')),
                             validate(value) {
                                 if (!value || value.trim().length === 0) {
                                     this.error = 'Name is required.';
@@ -77,7 +77,7 @@
                         {{-- Email --}}
                         <div class="mb-6" x-data="{ 
                             error: null,
-                            serverError: @js($errors->get('email')->first()),
+                            serverError: @js($errors->first('email')),
                             validate(value) {
                                 if (!value || value.trim().length === 0) {
                                     this.error = 'Email is required.';
@@ -107,7 +107,7 @@
                         {{-- ✅ ADDED: Subject Field --}}
                         <div class="mb-6" x-data="{ 
                             error: null,
-                            serverError: @js($errors->get('subject')->first()),
+                            serverError: @js($errors->first('subject')),
                             validate(value) {
                                 if (!value || value.trim().length === 0) {
                                     this.error = 'Subject is required.';
@@ -132,7 +132,7 @@
                         {{-- Message --}}
                         <div class="mb-6" x-data="{ 
                             error: null,
-                            serverError: @js($errors->get('message')->first()),
+                            serverError: @js($errors->first('message')),
                             validate(value) {
                                 if (!value || value.trim().length === 0) {
                                     this.error = 'Message is required.';

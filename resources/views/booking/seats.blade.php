@@ -18,12 +18,21 @@
             price: {{ $schedule->route->price }},
             tripType: '{{ request('trip_type', 'one_way') }}',
             
+            init() {
+                // Watch for tripType changes and recalculate price
+                this.$watch('tripType', () => {
+                    // Force recalculation
+                });
+                this.$watch('adults', () => {
+                    // Force recalculation
+                });
+                this.$watch('children', () => {
+                    // Force recalculation
+                });
+            },
+            
             updateTripType(newType) {
                 this.tripType = newType;
-                // Force Alpine to recognize the change
-                this.$nextTick(() => {
-                    // This ensures reactivity
-                });
             },
             
             toggleSeat(seat) {

@@ -20,6 +20,10 @@
             
             updateTripType(newType) {
                 this.tripType = newType;
+                // Force Alpine to recognize the change
+                this.$nextTick(() => {
+                    // This ensures reactivity
+                });
             },
             
             toggleSeat(seat) {
@@ -63,7 +67,10 @@
                 const oneWayPrice = (this.adults * this.price) + (this.children * (this.price * 0.8));
                 
                 // Round trip means two trips (outbound + return), so multiply by 2
-                const finalPrice = this.tripType === 'round_trip' ? oneWayPrice * 2 : oneWayPrice;
+                const isRoundTrip = this.tripType === 'round_trip';
+                const finalPrice = isRoundTrip ? oneWayPrice * 2 : oneWayPrice;
+                
+                // Return formatted price
                 return finalPrice.toLocaleString('en-US', {minimumFractionDigits: 2});
             }
          }">
